@@ -1,21 +1,22 @@
 package RotSchwarzBaum;
 
 import java.io.*;
+import java.util.Random;
 
 /**
  * Quelle: http://www.peter-junglas.de/fh/vorlesungen/algorithmen/html/
  */
 
-public class Baum {
+public class Main {
   
-  public BaumKnoten wurzel;
+  public RBT wurzel;
   
-  public Baum() {
+  public Main() {
     // Konstruktor erzeugt leeren Baum
     wurzel = null;
   }
   
-  public void einfügen(BaumKnoten neu) {
+  public void einfügen(RBT neu) {
     // fügt Knoten neu an die richtige Stelle ein
     
     // 1. Fall: Baum ist noch leer
@@ -27,7 +28,7 @@ public class Baum {
     }
   }
   
-  private void einfügen(BaumKnoten spitze, BaumKnoten neu) {
+  private void einfügen(RBT spitze, RBT neu) {
     // fügt Knoten neu an die richtige Stelle unter Teilbaum spitze ein
     
     if (spitze.daten > neu.daten) {
@@ -59,7 +60,7 @@ public class Baum {
     }
   }
   
-  private String toString(BaumKnoten b) {
+  private String toString(RBT b) {
     // Ausdrucken des Teilbaums ab b, Reihenfolge inorder
     String s = "";
     
@@ -77,20 +78,22 @@ public class Baum {
   // Testprogramm mit Zufallszahlen
   public static void main(String[] args) throws IOException {
     
-    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    
-    // Anzahl der Werte abfragen
-    System.out.println("Anzahl der Listenelemente eingeben:");
-    String s = in.readLine();
-    int anzahl = Integer.parseInt(s);
+    // Anzahl der Werte festlegen
+    int anzahl = 15;
     
     // starte mit leerem Baum
-    Baum sortierBaum = new Baum();
+    Main sortierBaum = new Main();
     
     // fülle den Baum
     for (int i = 0; i < anzahl; i++) {
-      int wert =  (int)(Math.random()*10);
-      BaumKnoten neu = new BaumKnoten(wert);
+
+      Random x = new Random(i);
+
+      int wert;
+      // Erzugt einen Festen Random wert
+      x.setSeed(i);
+      wert = x.nextInt(100);
+      RBT neu = new RBT(wert);
       sortierBaum.einfügen(neu);
     }
     

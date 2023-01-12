@@ -1,20 +1,20 @@
 package RotSchwarzBaum;
 
-public class BaumKnoten {
+public class RBT {
 
     public int daten;
-    public BaumKnoten links;
-    public BaumKnoten rechts;
+    public RBT links;
+    public RBT rechts;
      
     // einfacher Konstruktor
-    public BaumKnoten(int n) {
+    public RBT(int n) {
       daten  = n;
       links  = null;   // zeigen noch nirgendwo hin
       rechts = null;
     }
   
     // Konstruktor mit Zielen
-    public BaumKnoten(int n, BaumKnoten l, BaumKnoten r) {
+    public RBT(int n, RBT l, RBT r) {
       daten = n;
       links = l;
       rechts = r;
