@@ -5,6 +5,7 @@ import org.graphviz.Graphviz;
 public class BlackRedTree {
     static BlackRedTree brt = new BlackRedTree();
     static Tree nilTree = brt.new Tree(0, null);
+    static StringBuilder strTree = new StringBuilder();
     public static void main(String[] args) {
         Tree T = brt.new Tree(10, nilTree);
 
@@ -138,53 +139,100 @@ public class BlackRedTree {
         x.root = y;
     }
 
-    public void output(Tree T, Graph graph){
-        
-    // Erstelle einen leeren Stack
-    Stack<Tree> stack = new Stack<Tree>();
-    // Füge den Wurzelknoten des BST dem Stack hinzu
-    stack.push(T.root);
-
-    // Solange der Stack nicht leer ist
-    while(!stack.isEmpty()) {
-    // Pop einen Knoten vom Stack
-    Tree tree = stack.pop();
-
-    // Gib dem Knoten einen eindeutigen Namen
-    String nodeName = "Node" + tree.key;
-
-    // Füge den Knoten dem Graph hinzu
-    graph.addNode(nodeName);
-
-    // Wenn der Knoten einen linken Kindknoten hat
-    if(node.getLeft() != null) {
-        // Gib dem linken Kindknoten einen eindeutigen Namen
-        String leftChildName = "Node" + node.getLeft().getValue();
-        // Füge den linken Kindknoten dem Graph hinzu
-        graph.addNode(leftChildName);
-        // Füge eine Kante zwischen dem Knoten und seinem linken Kindknoten hinzu
-        graph.addEdge(nodeName, leftChildName, "");
-        // Füge den linken Kindknoten dem Stack hinzu
-        stack.push(node.getLeft());
+    public static void inorderTreeWalkReturn(Tree T) {
+        if (T != null) {
+            inorderTreeWalkReturn(T.left);
+            inorderTreeWalkReturn(T.right);
+            strTree.append(T.key + "," + T.root.key + "," + T.color + ";");
+        }
     }
-    // Wenn der Knoten einen rechten Kindknoten hat
-    if(node.getRight() != null) {
-        // Gib dem rechten Kindknoten einen eindeutigen Namen
-        String rightChildName = "Node" + node.getRight().getValue();
-        // Füge den rechten Kindknoten dem Graph hinzu
-        graph.addNode(rightChildName);
-        // Füge eine Kante zwischen dem Knoten und seinem rechten Kindknoten hinzu
-        graph.addEdge(nodeName, rightChildName, "");
-        // Füge den rechten Kindknoten dem Stack hinzu
-        stack.push(node.getRight());
+
+    public static String dotToString(Tree _data) {
+        String str = new String();
+        inorderTreeWalkReturn(_data);
+        String[] x = strTree.toString().split(";");
+        String[][] z = new String[x.length][3];
+
+        for (int i = 0; i < x.length; i++) {
+            String[] y = x[i].toString().split(",");
+            for (int j = 0; j < y.length; j++) {
+                z[i][j] = y[j];
+            }
+            str += z[i][1] + " -> " + z[i][0] + ";\n";
+            if (z[i][2].equals("true")) {
+                str += z[i][0] + "[fillcolor=red];\n";
+            }
+        }
+        return str;
     }
-    // Wenn der Knoten keine Kindknoten hat
-    if(node.getLeft() == null && node.getRight() == null) {
-        // Füge dem Knoten ein Label mit seinem Wert hinzu
-        graph.addLabel(nodeName, String.valueOf(node.getValue()));
+
+    public static void output(Tree _data) {
+        // Tree dataTree;
+        System.out.println(_data);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("output.dot"));
+            writer.write(
+                    "digraph G {\ngraph [ratio=.48];\nnode [style=filled, color=black, shape=circle, width=.6 fontname=Helvetica, fontweight=bold, fontcolor=white, fontsize=24, fixedsize=true];\n\n");
+            String str = dotToString(_data);
+            writer.write(str);
+            writer.write("\n}");
+            writer.close();
+
+            System.out.println("Done!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
-    }
+
+    // public void output(Tree T, Graph graph){
+
+    // // Erstelle einen leeren Stack
+    // Stack<Tree> stack = new Stack<Tree>();
+    // // Füge den Wurzelknoten des BST dem Stack hinzu
+    // stack.push(T.root);
+
+    // // Solange der Stack nicht leer ist
+    // while(!stack.isEmpty()) {
+    // // Pop einen Knoten vom Stack
+    // Tree tree = stack.pop();
+
+    // // Gib dem Knoten einen eindeutigen Namen
+    // String nodeName = "Node" + tree.key;
+
+    // // Füge den Knoten dem Graph hinzu
+    // graph.addNode(nodeName);
+
+    // // Wenn der Knoten einen linken Kindknoten hat
+    // if(node.getLeft() != null) {
+    // // Gib dem linken Kindknoten einen eindeutigen Namen
+    // String leftChildName = "Node" + node.getLeft().getValue();
+    // // Füge den linken Kindknoten dem Graph hinzu
+    // graph.addNode(leftChildName);
+    // // Füge eine Kante zwischen dem Knoten und seinem linken Kindknoten hinzu
+    // graph.addEdge(nodeName, leftChildName, "");
+    // // Füge den linken Kindknoten dem Stack hinzu
+    // stack.push(node.getLeft());
+    // }
+    // // Wenn der Knoten einen rechten Kindknoten hat
+    // if(node.getRight() != null) {
+    // // Gib dem rechten Kindknoten einen eindeutigen Namen
+    // String rightChildName = "Node" + node.getRight().getValue();
+    // // Füge den rechten Kindknoten dem Graph hinzu
+    // graph.addNode(rightChildName);
+    // // Füge eine Kante zwischen dem Knoten und seinem rechten Kindknoten hinzu
+    // graph.addEdge(nodeName, rightChildName, "");
+    // // Füge den rechten Kindknoten dem Stack hinzu
+    // stack.push(node.getRight());
+    // }
+    // // Wenn der Knoten keine Kindknoten hat
+    // if(node.getLeft() == null && node.getRight() == null) {
+    // // Füge dem Knoten ein Label mit seinem Wert hinzu
+    // graph.addLabel(nodeName, String.valueOf(node.getValue()));
+    // }
+    // }
+    // }
+
 
     class Tree {
         int key;
