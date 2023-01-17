@@ -1,6 +1,4 @@
-import java.util.Stack;
-import org.w3c.dom.Node;
-import org.graphviz.Graphviz;
+import java.io.*;
 
 public class BlackRedTree {
     static BlackRedTree brt = new BlackRedTree();
@@ -9,7 +7,7 @@ public class BlackRedTree {
     public static void main(String[] args) {
         Tree T = brt.new Tree(10, nilTree);
 
-        int[] A = {13, 4, 26, 45, 3, 5, 12, 2, 67, 56};
+        int[] A = {13, 4, 26, 45, 3, 7, 12, 2, 67, 56};
 
         for(int tmp : A){
             insert(T, tmp);
@@ -17,6 +15,7 @@ public class BlackRedTree {
         }
 
         inorderTreeWalk(T);
+        output(T);
     }
 
     public static void inorderTreeWalk(Tree T){
@@ -167,8 +166,6 @@ public class BlackRedTree {
     }
 
     public static void output(Tree _data) {
-        // Tree dataTree;
-        System.out.println(_data);
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("output.dot"));
             writer.write(
